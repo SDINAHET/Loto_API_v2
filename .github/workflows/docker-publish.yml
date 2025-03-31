@@ -131,7 +131,7 @@ jobs:
 
       - name: Build and push Backend Docker image
         run: |
-          IMAGE_NAME=ghcr.io/$(echo "${{ github.repository_owner }}/loto_api_backend" | tr '[:upper:]' '[:lower:]')
+          IMAGE_NAME=ghcr.io/$(echo "${{ github.repository_owner }}/loto_api_v2_backend" | tr '[:upper:]' '[:lower:]')
 
           # Construire et pousser l'image Backend
           docker build --platform linux/amd64 -t $IMAGE_NAME:latest -t $IMAGE_NAME:${{ github.sha }} -f Dockerfile.backend .
@@ -154,7 +154,7 @@ jobs:
 
       - name: Build and push Frontend Docker image
         run: |
-          IMAGE_NAME=ghcr.io/$(echo "${{ github.repository_owner }}/loto_api_frontend" | tr '[:upper:]' '[:lower:]')
+          IMAGE_NAME=ghcr.io/$(echo "${{ github.repository_owner }}/loto_api_v2_frontend" | tr '[:upper:]' '[:lower:]')
 
           # Construire et pousser l'image Frontend
           docker build --platform linux/amd64 -t $IMAGE_NAME:latest -t $IMAGE_NAME:${{ github.sha }} -f Dockerfile.frontend .
