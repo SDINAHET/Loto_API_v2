@@ -193,7 +193,7 @@ name: Publish Docker Images
 on:
   push:
     branches:
-      - main  # Exécuter seulement sur la branche principale
+      - main
 
 jobs:
   push_to_registry_backend:
@@ -204,13 +204,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Verify GHCR_TOKEN is set
+        run: |
+          if [ -z "${{ secrets.GHCR_TOKEN }}" ]; then
+            echo "❌ GHCR_TOKEN is not set in repository secrets."
+            exit 1
+          fi
+
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build and push Backend Docker image
         run: |
           IMAGE_NAME=ghcr.io/$(echo "${{ github.repository_owner }}/loto_api_v2_backend" | tr '[:upper:]' '[:lower:]')
-
           docker build --platform linux/amd64 -f Dockerfile.backend -t $IMAGE_NAME:latest -t $IMAGE_NAME:${{ github.sha }} .
           docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:${{ github.sha }}
@@ -226,13 +232,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Verify GHCR_TOKEN is set
+        run: |
+          if [ -z "${{ secrets.GHCR_TOKEN }}" ]; then
+            echo "❌ GHCR_TOKEN is not set in repository secrets."
+            exit 1
+          fi
+
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build and push Frontend Docker image
         run: |
           IMAGE_NAME=ghcr.io/$(echo "${{ github.repository_owner }}/loto_api_v2_frontend" | tr '[:upper:]' '[:lower:]')
-
           docker build --platform linux/amd64 -f Dockerfile.frontend -t $IMAGE_NAME:latest -t $IMAGE_NAME:${{ github.sha }} .
           docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:${{ github.sha }}
@@ -252,6 +264,13 @@ jobs:
         run: |
           IMAGE_NAME=ghcr.io/$(echo "${{ github.repository_owner }}/loto_mongodb" | tr '[:upper:]' '[:lower:]')
           docker tag mongo:latest $IMAGE_NAME:latest
+
+      - name: Verify GHCR_TOKEN is set
+        run: |
+          if [ -z "${{ secrets.GHCR_TOKEN }}" ]; then
+            echo "❌ GHCR_TOKEN is not set in repository secrets."
+            exit 1
+          fi
 
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
