@@ -108,7 +108,6 @@
 
 #       - name: Logout from GitHub Container Registry
 #         run: docker logout ghcr.io
-#
 
 
 name: Publish Docker Images
