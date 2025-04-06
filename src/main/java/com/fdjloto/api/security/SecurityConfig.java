@@ -60,7 +60,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // 🔴 Désactive CSRF pour les APIs REST stateless
                 // .csrf(AbstractHttpConfigurer::disable) // ✅ Version optimisée
                 // .anonymous(anonymous -> anonymous.disable()) // Supprime l'authentification anonyme
-                .cors(cors -> cors.disable()) // 🔴 Désactive CORS (ajoute une config si nécessaire)
+                // .cors(cors -> cors.disable()) // 🔴 Désactive CORS (ajoute une config si nécessaire)
+                .cors(cors -> {}) // ✅ Active CORS, configuration à venir
                 // .httpBasic(httpBasic -> httpBasic.disable()) // 🔴 Désactive l'authentification basique
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 🔴 JWT = stateless
                 .authorizeHttpRequests(auth -> auth
@@ -108,5 +109,23 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // 🔐 Ajoute le filtre JWT
                 .build();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(
+            "http://127.0.0.1:5500",
+            "https://stephanedinahet.fr",
+            "https://loto-api-black.vercel.app"
+        ));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true); // Important pour cookies JWT
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 
 }
