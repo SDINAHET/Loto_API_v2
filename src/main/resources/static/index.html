@@ -292,7 +292,7 @@
     <!-- <div id="loading-screen">
         <div class="loader"></div>
         <p>Chargement du site Loto Tracker... Veuillez patienter.</p>
-        <p>http://localhost:8082/api/health</p>
+        <p>http://stephanedinahet.fr/api/health</p>
     </div> -->
 
     <!-- 📌 Contenu principal caché au départ -->
@@ -599,7 +599,7 @@
 
         async function loadLast20() {
             try {
-                let response = await axios.get("http://localhost:8082/api/historique/last20");
+                let response = await axios.get("http://stephanedinahet.fr/api/historique/last20");
                 let data = response.data;
                 let container = document.getElementById("last20");
                 container.innerHTML = "";
@@ -639,7 +639,7 @@
         async function viewDetails(date) {
             try {
                 let formattedDate = formatDateForAPI(date);
-                let apiUrl = `http://localhost:8082/api/historique/last20/Detail/tirage/${formattedDate}`;
+                let apiUrl = `http://stephanedinahet.fr/api/historique/last20/Detail/tirage/${formattedDate}`;
                 console.log("Requête API vers :", apiUrl);
 
                 let response = await axios.get(apiUrl);
@@ -1022,9 +1022,9 @@
             // ✅ Si endDate est vide, utiliser seulement startDate pour la recherche
             let apiUrl;
             if (!endDate) {
-                apiUrl = `http://localhost:8082/api/historique/last20/Detail/tirages?startDate=${startDate}`;
+                apiUrl = `http://stephanedinahet.fr/api/historique/last20/Detail/tirages?startDate=${startDate}`;
             } else {
-                apiUrl = `http://localhost:8082/api/historique/last20/Detail/tirages?startDate=${startDate}&endDate=${endDate}`;
+                apiUrl = `http://stephanedinahet.fr/api/historique/last20/Detail/tirages?startDate=${startDate}&endDate=${endDate}`;
             }
 
             console.log("Requête API vers :", apiUrl);
@@ -1107,7 +1107,7 @@
         async function showPrediction() {
             try {
                 console.log("📡 Récupération des prédictions...");
-                let response = await axios.get("http://localhost:8082/api/predictions/latest");
+                let response = await axios.get("http://stephanedinahet.fr/api/predictions/latest");
                 let data = response.data;
 
                 if (!data || !Array.isArray(data.probableNumbers) || typeof data.sortieRates !== "object") {
@@ -1209,7 +1209,7 @@
         // ✅ Vérifie si l'utilisateur est connecté via le cookie
         async function checkUserAuth() {
             try {
-                const response = await fetch("http://localhost:8082/api/protected/userinfo", {
+                const response = await fetch("http://stephanedinahet.fr/api/protected/userinfo", {
                     method: "GET",
                     credentials: "include" // Envoie le cookie JWT automatiquement
                 });
@@ -1234,7 +1234,7 @@
         // ✅ Déconnexion
         async function logout() {
             try {
-                const response = await fetch("http://localhost:8082/api/auth/logout", {
+                const response = await fetch("http://stephanedinahet.fr/api/auth/logout", {
                     method: "POST",
                     credentials: "include"
                 });
@@ -1251,7 +1251,7 @@
         // ✅ Ouvrir la modale de paramètres
         async function openSettings() {
             try {
-                const response = await fetch("http://localhost:8082/api/protected/userinfo", {
+                const response = await fetch("http://stephanedinahet.fr/api/protected/userinfo", {
                     method: "GET",
                     credentials: "include"
                 });
@@ -1288,7 +1288,7 @@
             };
 
             try {
-                const response = await fetch("http://localhost:8082/api/users/me", {
+                const response = await fetch("http://stephanedinahet.fr/api/users/me", {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
